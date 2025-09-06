@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><link rel="icon" href="../favicon.ico" type="image/x-icon" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>THE PLAY BY EAR</title>
+<style type="text/css">
+<!--
+body {
+	margin: 0;
+	padding: 0;
+	color: #000;
+	background-color: #FFFFFF;
+	font-size: 100%;
+	line-height: 1.4;
+	font-family: Palatino;
+}
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+	font-weight: normal;
+	font-size: 14px;
+	color: #1E1532;
+}
+.desktop-content {
+}
+a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+	border: none;
+}
+/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+a:link {
+	text-decoration: none;
+	color: #1E1532;
+}
+a:visited {
+	text-decoration: none;
+	color: #1E1532;
+}
+a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+	text-decoration: none;
+}
+
+/* ~~ this fixed width container surrounds all other elements ~~ */
+.container {
+	width: auto;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	font-weight: normal;
+	background-color: #FFF;
+	background-image: url(../images/tpbe-livingroom-play-background.jpg);
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+/* ~~ This is the layout information. ~~ 
+
+1) Padding is only placed on the top and/or bottom of the div. The elements within this div have padding on their sides. This saves you from any "box model math". Keep in mind, if you add any side padding or border to the div itself, it will be added to the width you define to create the *total* width. You may also choose to remove the padding on the element in the div and place a second div within it with no width and the padding necessary for your design.
+
+*/
+.content {
+	padding-right: 15px;
+	padding-bottom: 30px;
+	padding-left: 15px;
+	height: auto;
+	padding-top: 150px;
+	min-height: 650px;
+}
+.content-mobile {
+	padding-top: 73px;
+	height: auto;
+	background-color: #FFF;
+}
+.vids {
+	display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-rows: repeat(2, 100px);
+}
+.intro-background {
+	padding-top: 37px;
+	padding-right: 15px;
+	padding-bottom: 35px;
+	padding-left: 15px;
+	height: 320px;
+	background-repeat: no-repeat;
+	text-align: center;
+}
+.header-background {
+	width: 100%;
+	position: fixed;
+	text-align: center;
+	visibility: inherit;
+	border-bottom-style: none;
+	background-image: url(../images/heather-background.png);
+	background-repeat: repeat-x;
+	background-position: left bottom;
+}
+.footer-background {
+	width: 100%;
+	text-align: center;
+	background-color: #FFFFFF;
+	visibility: inherit;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #DBDBDB;
+}
+.header {
+	width: auto;
+	height: 80px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto;
+	text-align: left;
+	margin-right: auto;
+	min-width: 150px;
+	max-width: 2000px;
+	visibility: inherit;
+	font-size: 13px;
+	padding-right: 15px;
+	line-height: 30px;
+}
+.logo {
+	padding-left: 90px;
+}
+.footer {
+	width: auto;
+	height: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto;
+	text-align: center;
+	margin-right: auto;
+	min-width: 150px;
+	max-width: 1500px;
+	visibility: inherit;
+	color: #666;
+}
+.slider {
+	width: 100%;
+	height: calc(130% / (16/9));
+}
+.slider-mini {
+	height: auto;
+	width: 100%;
+	box-sizing: border-box;
+	max-width: 100px;
+}
+.menu-mobile {
+	width: 40px;
+	padding-top: 80px;
+	height: 1px;
+	background-image: url(../images/gif-button.gif);
+	background-position: 19px 20px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	display: block;
+	position: fixed;
+	font-weight: bold;
+	color: #FFF;
+	text-align: left;
+	visibility: inherit;
+	padding-right: 40px;
+	transition: 0.3s;
+	;
+	margin-right: 10px;
+	margin-bottom: 0px;
+}
+.menu-mobile:hover {
+	height: 100%;
+	width: 70%;
+	position: fixed;
+	visibility: inherit;
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-bottom: 30px;
+	;
+	background-image: none;
+	padding-right: 0px;
+	box-shadow: 0px 0px 28px 0px rgba(204,204,204,0.75);
+	opacity: 0.95;
+	padding-top: 0px;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	top: -2px;
+}
+.menu-odkazy {
+	height: auto;
+	width: 100%;
+	padding-top: 2px;
+}
+
+/* ~~ miscellaneous float/clear classes ~~ */
+.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.header-mobile {
+	width: auto;
+	height: 39px;
+	text-align: center;
+	display: block;
+	padding-top: 0px;
+	padding-right: 8px;
+	padding-bottom: 11px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.link-menu {
+	font-size: 20px;
+	font-weight: normal;
+	padding-left: 17px;
+	padding-top: 15px;
+	color: #1E1532;
+	font-variant: normal;
+	text-align: left;
+	width: 99%;
+	height: 40px;
+	display: block;
+	text-decoration: none;
+	vertical-align: middle;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #999999;
+	padding-right: 15px;
+}
+.button {
+}
+.link-menu:hover {
+	background-color: #999999;
+}
+.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the overflow:hidden on the .container is removed */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+.background-image  {
+	background-image: url(../../images/background-m.gif);
+	background-repeat: no-repeat;
+	width: auto;
+	height: 178px;
+}
+a:hover {
+	text-decoration: underline;
+	color: #1E1532;
+}
+a:active {
+	text-decoration: none;
+	color: #1E1532;
+}
+body,td,th {
+	font-family: Palatino;
+	color: #1E1532;
+}
+.beznytext {
+	font-size: 12px;
+	color: #000;
+	line-height: 10px;
+	text-decoration: none;
+}
+.box {	background-attachment: scroll;
+	background-image: url(../../images/box.png);
+	background-repeat: no-repeat;
+	background-position: center 20px;
+	padding-top: 10px;
+	width: 314px;
+	color: #900;
+	font-size: 24px;
+}
+.napis {
+	font-size: 15px;
+	color: #990000;
+	border: 1px solid #CCC;
+	height: auto;
+	border-radius: 10px;
+	box-sizing: border-box;
+	font-weight: normal;
+	display: block;
+	width: auto;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.napis:hover {
+	border: 1px solid #D10D0D;
+}
+.vetsi-text {
+	font-size: 18px;
+	color: #666666;
+	font-weight: bold;
+}
+@font-face {
+font-family: "Palatino";
+src: url("../palatino.ttf");
+}
+.credit {font-size: 12px;
+	text-align: right;
+}
+.big-text {
+	font-size: 30px;
+	color: #1E1532;
+	text-decoration: blink;
+	line-height: 35px;
+}
+.medium-text {
+	font-size: 24px;
+	color: #1E1532;
+	text-decoration: blink;
+	line-height: 30px;
+}
+.intro {
+	float: right;
+	max-width: 650px;
+	width: 70%;
+	text-shadow: 0px 0px 10px rgba(255, 255, 255, 1);;
+}
+.slider-zoom {
+	transition: transform .2s; /* Animation */
+	width: 100%;
+	max-width: 450px;
+	height: auto;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+.slider-zoom:hover {
+	transform: scale(1.15);
+}
+@media (max-width: 950px) {
+        .content {
+	display: none;
+        }
+    }
+@media (min-width: 951px) {
+.text-link {
+	font-size: 16px;
+}
+        .content-mobile {
+	display: none;
+        }
+    }
+.big-text1 {
+	font-size: 25px;
+	color: #1E1532;
+	text-decoration: blink;
+	line-height: 35px;
+}
+	
+-->
+  </style>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
+</head>
+    
+  <body>
+  <div class="header-background">
+    <div class="header">
+      <div class="menu-mobile">
+        <div class="menu-odkazy">
+        <iframe src="../_/menu.html" style="border:0px #ffffff none;" height="3000px" width="100%" seamless="seamless"></iframe></div>
+        <br />
+        <br />
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="16%"><a href="../index.html" target="_parent"><img src="../images/tpbe-home.gif" alt="logo" width="81" height="72" class="logo" oncontextmenu="return false;" img="img" draggable="false" /></a></td>
+          <td width="84%" align="right" valign="middle"><a href="https://www.youtube.com/channel/UCxPEU6nFK9sGYmIloLTPolA" target="new" class="text-link"><strong><img src="../images/you-tube2.png" alt="" width="20" height="11" oncontextmenu="return false;" img="img" draggable="false" /></strong>VISIT CHANNEL</a><br />
+            <a href="../tv/index.html" target="new" class="text-link"><img src="../images/tpbe-tv-icon2.png" alt="" width="18" height="13" /> PLAY TV </a></td>
+        </tr>
+      </table>
+      <div class="header-mobile"></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="content-mobile">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center"><iframe src="https://www.youtube.com/embed/vWLyEIg4PYM" width="100%" height="500" frameborder="0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe></td>
+        </tr>
+      </table>
+      <table width="90%" border="0" align="center" cellpadding="0" cellspacing="40">
+        <tr>
+          <td width="70%" align="center"><a target="_parent" class="big-text1">SOUND OF SILENCE</a><br />
+            <span class="beznytext">inspired by Disturbed</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="content">
+      <div class="desktop-content"></div>
+      <div class="intro-background">
+        <iframe width="600" height="337" src="https://www.youtube.com/embed/vWLyEIg4PYM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
+      </div>
+      <table width="100%" border="0" cellspacing="20" cellpadding="0">
+        <tr>
+          <td align="center" valign="top"><span class="big-text">SOUND OF SILENCE <span class="beznytext">/ inspired by Disturbed</span></span></td>
+        </tr>
+      </table>
+      <table width="100%" border="0" cellpadding="0" cellspacing="30">
+        <tr>
+          <td align="center">&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="footer-background">
+    <div class="footer">
+      <table width="99%" border="0" cellspacing="40" cellpadding="0">
+        <tr>
+          <td align="right" valign="middle"><p>©
+            <script>document.write(new Date().getFullYear())</script>
+            <strong>THE PLAY BY EAR</strong></p></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+  </html>
+</div>
