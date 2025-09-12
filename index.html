@@ -70,6 +70,27 @@ function MM_preloadImages() { //v3.0
     if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
 }
   </script>
+
+<script>
+    window.onload = function () {
+      // Nastav cílový čas: dnes v 22:30:00
+      const target = new Date();
+      target.setHours(22);
+      target.setMinutes(30);
+      target.setSeconds(0);
+
+      const now = new Date();
+      const diff = target - now; // rozdíl v milisekundách
+
+      if (diff > 0) {
+        // Nastav časovač – stránka se obnoví až v daný čas
+        setTimeout(() => {
+          location.reload();
+        }, diff);
+      }
+    };
+  </script>
+
 </head>
 </style>
 </head>
