@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><link rel="icon" href="favicon.ico" type="image/x-icon" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>prima+</title>
+<style type="text/css">
+<!--
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #201734;
+	font-family: Palatino;
+}
+@font-face {
+font-family: "Palatino";
+src: url("palatino.ttf");
+}
+.video-play {
+	width: 100%;
+	position: relative;
+	height: 100%;
+}
+.slider {
+	height: auto;
+	width: 2.5em;
+	box-sizing: border-box;
+	margin-bottom: 2%;
+	margin-left: 1%;
+}
+.time {
+	position: absolute;
+	font-size: calc(1.6vw + 1.6vh);
+	font-weight: bold;
+	color: rgba(159, 151, 175, 0.40);
+	text-align: center;
+	z-index: 999;
+	left: 3.9%;
+	top: 4%;
+}
+-->
+  </style>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<script type="text/javascript">
+function startTime()
+{
+var today=new Date();
+var h=today.getHours();
+var m=today.getMinutes();
+var s=today.getSeconds();
+// add a zero in front of numbers<10
+m=checkTime(m);
+s=checkTime(s);
+document.getElementById('txt').innerHTML=h+":"+m;
+t=setTimeout('startTime()',500);
+}
+function checkTime(i)
+{
+if (i<10)
+{
+i="0" + i;
+}
+return i;
+}
+</script>
+<script type="text/javascript">
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+  </script>
+</style>
+</head>
+  <body onload="startTime()">
+  <div class="video-play"> 
+  <div style="position: fixed; z-index: -99; width: 100%; height: 100%">
+  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNn4FjUqKl6VfNvAmRmTb8Ba&loop=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  </div>
+  <table border="0" cellpadding="0" cellspacing="0" class="time" oncontextmenu="return false;" draggable="false">
+    <tr>
+      <td><img src="images/prima+.png" alt="" width="120" height="41" class="slider" />
+    </tr>
+  </table>
+
+<script>
+(function() {
+  // Nastav konkrétní datum a čas (ISO formát)
+  var target = new Date("2025-09-13T11:05:00");
+  var now = new Date();
+  var diff = target - now; // rozdíl v ms
+
+  if (diff > 0) {
+    console.log("Refresh za " + Math.round(diff / 1000) + " sekund");
+    setTimeout(function() {
+      location.reload();
+    }, diff);
+  } else {
+    console.log("Zadaný čas už proběhl, refresh se nespustí.");
+  }
+})();
+</script>
+
+</body>
+  </html>
+</div>
