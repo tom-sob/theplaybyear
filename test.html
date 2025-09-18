@@ -1,220 +1,108 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head><link rel="icon" href="favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>TV by THE PLAY BY EAR</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<title>TPBE tv</title>
 <style type="text/css">
+<!--
 body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	height: 100%;
-	background-color: #141414;
+	background-color: #201734;
 	font-family: Palatino;
 }
-
 @font-face {
-  font-family: "Palatino";
-  src: url("palatino.ttf");
+font-family: "Palatino";
+src: url("palatino.ttf");
 }
-
-.video-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-}
-
 .video-play {
-  position: relative;
-  width: min(100vw, 100vh * 16 / 9);
-  height: min(100vh, 100vw * 9 / 16);
-  background-color: #201734;
+	width: 100%;
+	position: relative;
+	height: 100%;
 }
-
-.video-play iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-/* Overlay pro zachytávání pohybu myši nad iframe */
-.mouse-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 500;
-  background: transparent;
-  pointer-events: auto;
-}
-
-/* Tabulka s časem */
-.time {
-  position: absolute;
-  bottom: 4.15%;
-  right: 10%;
-  font-size: calc(1.6vw + 1.6vh);
-  color: rgba(159, 151, 175, 0.40);
-  font-weight: bold;
-  text-align: center;
-  z-index: 999;
-  max-width: 90%;     /* drží tabulku uvnitř videa */
-  max-height: 90%;    /* brání přesahu */
-  overflow: hidden;   /* nic nepřetéká ven */
-  transform-origin: bottom right; /* drží měřítko v rohu */
-}
-
-/* Logo */
 .slider {
-  height: auto;
-  width: 3.6em;
-  box-sizing: border-box;
-  margin-bottom: 2%;
-  margin-left: 1%;
+	height: auto;
+	width: 3.6em;
+	box-sizing: border-box;
+	margin-bottom: 2%;
+	margin-left: 1%;
 }
-
-/* Tlačítka fullscreen */
-.fullscreen-btn {
+.time {
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	padding: 0.3em;
-	background-color: rgba(0,0,0,0);
-	border: none;
-	cursor: pointer;
-	display: none;
-	z-index: 1000;
+	font-size: calc(1.6vw + 1.6vh);
+	font-weight: bold;
+	color: rgba(159, 151, 175, 0.40);
+	bottom: 4.15%;
+	text-align: center;
+	right: 10%;
+	z-index: 999;
 }
-.fullscreen-btn svg {
-  width: 24px;
-  height: 24px;
-  stroke: white;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-</style>
-
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+-->
+  </style>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 <script type="text/javascript">
-function startTime() {
-  var today=new Date();
-  var h=today.getHours();
-  var m=today.getMinutes();
-  m=checkTime(m);
-  document.getElementById('txt').innerHTML=h+":"+m;
-  setTimeout(startTime,500);
+function startTime()
+{
+var today=new Date();
+var h=today.getHours();
+var m=today.getMinutes();
+var s=today.getSeconds();
+// add a zero in front of numbers<10
+m=checkTime(m);
+s=checkTime(s);
+document.getElementById('txt').innerHTML=h+":"+m;
+t=setTimeout('startTime()',500);
 }
-function checkTime(i) {
-  if (i<10) { i="0" + i; }
-  return i;
+function checkTime(i)
+{
+if (i<10)
+{
+i="0" + i;
 }
-
-function goFullscreen() {
-  const elem = document.querySelector('.video-play');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
-    elem.msRequestFullscreen();
-  }
-}
-
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) { /* Safari */
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) { /* IE11 */
-    document.msExitFullscreen();
-  }
+return i;
 }
 </script>
+<script type="text/javascript">
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+  </script>
+</style>
 </head>
-
-<body onload="startTime()">
-
-<div class="video-wrapper">
+  <body onload="startTime()">
   <div class="video-play"> 
-    <iframe src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNkFokGN6uEYzgAmCT0RuQ15&loop=1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-    <!-- Overlay nad iframe -->
-    <div class="mouse-overlay"></div>
-
-    <!-- Tlačítko fullscreen -->
-    <button class="fullscreen-btn" id="enterFullscreenBtn" onclick="goFullscreen()">
-      <svg viewBox="0 0 24 24">
-        <path d="M3 3h6v6H3V3zM15 3h6v6h-6V3zM3 15h6v6H3v-6zM15 15h6v6h-6v-6z"></path>
-      </svg>
-    </button>
-
-    <!-- Tlačítko exit fullscreen -->
-    <button class="fullscreen-btn" id="exitFullscreenBtn" onclick="exitFullscreen()" style="display:none;">
-      <svg viewBox="0 0 24 24">
-        <path d="M9 9H3V3h6v6zm12 0h-6V3h6v6zM9 21H3v-6h6v6zm12 0h-6v-6h6v6z"></path>
-      </svg>
-    </button>
-
-    <!-- Tabulka s logem a hodinami -->
-    <table border="0" cellpadding="0" cellspacing="20" class="time" oncontextmenu="return false;" draggable="false">
-      <tr>
-        <td>
-          <img src="images/tpbetv-logo.png" alt="" width="340" height="283" class="slider" />
-          <div id="txt"></div>
-        </td>
-      </tr>
-    </table>
+  <div style="position: fixed; z-index: -99; width: 100%; height: 100%">
+  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNkFokGN6uEYzgAmCT0RuQ15" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
-</div>
+  </div>
+  <table border="0" cellpadding="0" cellspacing="20" class="time" oncontextmenu="return false;" draggable="false">
+    <tr>
+      <td><img src="images/tpbetv-logo.png" alt="" width="340" height="283" class="slider" />
+      <div id="txt"></div></td>
+    </tr>
+  </table>
 
 <script>
-// Automatický refresh
 (function() {
+  // Nastav konkrétní datum a čas (ISO formát)
   var target = new Date("2025-09-13T11:05:00");
   var now = new Date();
-  var diff = target - now;
+  var diff = target - now; // rozdíl v ms
+
   if (diff > 0) {
-    setTimeout(function() { location.reload(); }, diff);
+    console.log("Refresh za " + Math.round(diff / 1000) + " sekund");
+    setTimeout(function() {
+      location.reload();
+    }, diff);
+  } else {
+    console.log("Zadaný čas už proběhl, refresh se nespustí.");
   }
 })();
-
-let hideTimeout;
-const enterBtn = document.getElementById('enterFullscreenBtn');
-const exitBtn = document.getElementById('exitFullscreenBtn');
-const overlay = document.querySelector('.mouse-overlay');
-
-function showBtn() {
-  const activeBtn = document.fullscreenElement ? exitBtn : enterBtn;
-  activeBtn.style.display = 'block';
-  clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(() => {
-    activeBtn.style.display = 'none';
-    overlay.style.pointerEvents = 'auto';
-  }, 3000);
-}
-
-overlay.addEventListener('mousemove', () => {
-  showBtn();
-  overlay.style.pointerEvents = 'none';
-});
-
-document.addEventListener('fullscreenchange', () => {
-  if (document.fullscreenElement) {
-    enterBtn.style.display = 'none';
-    showBtn(); // ukáže exit
-  } else {
-    exitBtn.style.display = 'none';
-    showBtn(); // ukáže enter
-  }
-});
 </script>
 
 </body>
-</html>
+  </html>
+</div>
