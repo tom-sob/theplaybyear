@@ -67,7 +67,9 @@ body {
 	max-height: 90%;
 	overflow: hidden;
 	transform-origin: bottom right; /* drží měřítko v rohu */
-	transition: transform 0.2s ease; /* plynulý resize */
+	opacity: 0;
+  	animation: show 1s ease forwards;
+  	animation-delay: 0.5s; /* objeví se po 3 sekundách */
 }
 
 /* Logo */
@@ -100,6 +102,13 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+@keyframes show {
+  to {
+    opacity: 1;
+  }
+}
+
 </style>
 
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
