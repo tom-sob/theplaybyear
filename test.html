@@ -31,7 +31,6 @@ body {
 	position: relative;
   width: min(100vw, 100vh * 16 / 9);
   height: min(100vh, 100vw * 9 / 16);
-  /* původní výpočty nechány beze změny */
 }
 
 .video-play iframe {
@@ -39,6 +38,15 @@ body {
   height: 100%;
   border: 0;
   display: block;
+}
+
+/* Nový wrapper kolem iframe pro touch-scroll */
+.iframe-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* povolí scroll na dotykových zařízeních */
+  -webkit-overflow-scrolling: touch; /* plynulé scrollování na iOS */
+  position: relative;
 }
 
 /* Overlay pro zachytávání pohybu myši nad iframe */
@@ -58,7 +66,7 @@ body {
 	position: absolute;
 	bottom: 4.15%;
 	right: 10%;
-	font-size: 1.3em; /* velikost bude řízena JS scale */
+	font-size: 1.3em;
 	color: rgba(159, 151, 175, 0.40);
 	font-weight: bold;
 	text-align: center;
@@ -66,10 +74,10 @@ body {
 	max-width: 90%;
 	max-height: 90%;
 	overflow: hidden;
-	transform-origin: bottom right; /* drží měřítko v rohu */
+	transform-origin: bottom right;
 	opacity: 0;
   	animation: show 1s ease forwards;
-  	animation-delay: 0.75s; /* objeví se po 3 sekundách */
+  	animation-delay: 0.75s;
 }
 
 /* Logo */
@@ -126,14 +134,14 @@ function checkTime(i) {
   return i;
 }
 
-// --- ZMĚNA: při Fullscreen voláme nad wrapperem místo nad .video-play ---
+// --- Fullscreen nad wrapper ---
 function goFullscreen() {
-  const elem = document.querySelector('.video-wrapper'); // <<< změněno z .video-play na .video-wrapper
+  const elem = document.querySelector('.video-wrapper');
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
+  } else if (elem.webkitRequestFullscreen) {
     elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
+  } else if (elem.msRequestFullscreen) {
     elem.msRequestFullscreen();
   }
 }
@@ -141,66 +149,55 @@ function goFullscreen() {
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) { /* Safari */
+  } else if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) { /* IE11 */
+  } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }
 }
 
-// --- Nová funkce pro proportional scaling tabulky ---
+// --- Proporční škálování tabulky ---
 function scaleTimeTable() {
   const wrapper = document.querySelector('.video-wrapper');
   const table = document.querySelector('.time');
   if (!wrapper || !table) return;
   
-  const scaleX = wrapper.clientWidth / 800;  // 800px = základní reference šířky
-  const scaleY = wrapper.clientHeight / 450; // 450px = základní reference výšky
-  const scale = Math.min(scaleX, scaleY);    // proporcionální škálování
-
+  const scaleX = wrapper.clientWidth / 800;
+  const scaleY = wrapper.clientHeight / 450;
+  const scale = Math.min(scaleX, scaleY);
   table.style.transform = 'scale(' + scale + ')';
 }
 
-// --- Nová funkce: nastaví .video-play přesné pixely, když je wrapper ve fullscreen ---
+// --- Přizpůsobení .video-play ve fullscreen ---
 function adjustVideoPlaySizeForFullscreen() {
   const wrapper = document.querySelector('.video-wrapper');
   const player = document.querySelector('.video-play');
   if (!wrapper || !player) return;
 
-  // zjistit, zda jsme ve fullscreen (cross-browser)
   const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
   if (fsElem === wrapper) {
-    // spočítat ideální šířku tak, aby .video-play zůstal 16:9 a vešel se na obrazovku
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const widthFromVH = Math.round(vh * 16 / 9);
     const chosenWidth = Math.min(vw, widthFromVH);
     const chosenHeight = Math.round(chosenWidth * 9 / 16);
 
-    // aplikovat explicitní pixely (tím zajistíme přesné 16:9 i ve fullscreenu)
     player.style.width = chosenWidth + 'px';
     player.style.height = chosenHeight + 'px';
 
-    // zajistit, aby wrapper zůstal centrovaný (wrapper je flex container, takže stačí)
-    // přepočítat měřítko tabulky po změně rozměrů
     scaleTimeTable();
   } else {
-    // opustili jsme fullscreen — vrátit se k původnímu CSS (remove inline style)
     player.style.width = '';
     player.style.height = '';
     scaleTimeTable();
   }
 }
 
-// Přepočítat při načtení a při resize
 window.addEventListener('load', scaleTimeTable);
 window.addEventListener('resize', () => {
   scaleTimeTable();
-  adjustVideoPlaySizeForFullscreen(); // pokud jsme ve fullscreenu, přepočítej
+  adjustVideoPlaySizeForFullscreen();
 });
-
-// (poznámka: voláme adjust také při změně fullscreen stavu níže)
-
 </script>
 </head>
 
@@ -208,19 +205,25 @@ window.addEventListener('resize', () => {
 
 <div class="video-wrapper">
   <div class="video-play"> 
-    <iframe src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNkFokGN6uEYzgAmCT0RuQ15&loop=1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!-- Nový wrapper pro touch scroll -->
+    <div class="iframe-wrapper">
+      <iframe src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNkFokGN6uEYzgAmCT0RuQ15&loop=1" 
+              title="YouTube video player" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+      </iframe>
+    </div>
 
     <!-- Overlay nad iframe -->
     <div class="mouse-overlay"></div>
 
-    <!-- Tlačítko fullscreen -->
+    <!-- Tlačítka fullscreen -->
     <button class="fullscreen-btn" id="enterFullscreenBtn" onclick="goFullscreen()">
       <svg viewBox="0 0 24 24">
         <path d="M3 3h6v6H3V3zM15 3h6v6h-6V3zM3 15h6v6H3v-6zM15 15h6v6h-6v-6z"></path>
       </svg>
     </button>
 
-    <!-- Tlačítko exit fullscreen -->
     <button class="fullscreen-btn" id="exitFullscreenBtn" onclick="exitFullscreen()" style="display:none;">
       <svg viewBox="0 0 24 24">
         <path d="M9 9H3V3h6v6zm12 0h-6V3h6v6zM9 21H3v-6h6v6zm12 0h-6v-6h6v6z"></path>
@@ -270,26 +273,21 @@ overlay.addEventListener('mousemove', () => {
   overlay.style.pointerEvents = 'none';
 });
 
-// --- upravený fullscreenchange handler: přepíná tlačítka a volá adjustVideoPlaySizeForFullscreen ---
 function onFullscreenChange() {
   const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
   const wrapper = document.querySelector('.video-wrapper');
   if (fsElem) {
-    // pokud fullscreen aktivní, zobrazíme exit tlačítko
     enterBtn.style.display = 'none';
     exitBtn.style.display = 'block';
-    showBtn(); // aby se tlačítko schovalo po x sekundách stejně jako dříve
+    showBtn();
   } else {
-    // když není fullscreen, zobrazíme enter tlačítko
     exitBtn.style.display = 'none';
     enterBtn.style.display = 'block';
     showBtn();
   }
-  // přepočítej velikost hráče pokud je potřeba
   adjustVideoPlaySizeForFullscreen();
 }
 
-// cross-browser event hooks
 document.addEventListener('fullscreenchange', onFullscreenChange);
 document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 document.addEventListener('msfullscreenchange', onFullscreenChange);
