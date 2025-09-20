@@ -31,6 +31,7 @@ body {
 	position: relative;
   width: min(100vw, 100vh * 16 / 9);
   height: min(100vh, 100vw * 9 / 16);
+  /* původní výpočty nechány beze změny */
 }
 
 .video-play iframe {
@@ -125,8 +126,9 @@ function checkTime(i) {
   return i;
 }
 
+// --- ZMĚNA: při Fullscreen voláme nad wrapperem místo nad .video-play ---
 function goFullscreen() {
-  const elem = document.querySelector('.video-play');
+  const elem = document.querySelector('.video-wrapper'); // <<< změněno z .video-play na .video-wrapper
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -150,6 +152,7 @@ function exitFullscreen() {
 function scaleTimeTable() {
   const wrapper = document.querySelector('.video-wrapper');
   const table = document.querySelector('.time');
+  if (!wrapper || !table) return;
   
   const scaleX = wrapper.clientWidth / 800;  // 800px = základní reference šířky
   const scaleY = wrapper.clientHeight / 450; // 450px = základní reference výšky
@@ -158,9 +161,46 @@ function scaleTimeTable() {
   table.style.transform = 'scale(' + scale + ')';
 }
 
+// --- Nová funkce: nastaví .video-play přesné pixely, když je wrapper ve fullscreen ---
+function adjustVideoPlaySizeForFullscreen() {
+  const wrapper = document.querySelector('.video-wrapper');
+  const player = document.querySelector('.video-play');
+  if (!wrapper || !player) return;
+
+  // zjistit, zda jsme ve fullscreen (cross-browser)
+  const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+  if (fsElem === wrapper) {
+    // spočítat ideální šířku tak, aby .video-play zůstal 16:9 a vešel se na obrazovku
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const widthFromVH = Math.round(vh * 16 / 9);
+    const chosenWidth = Math.min(vw, widthFromVH);
+    const chosenHeight = Math.round(chosenWidth * 9 / 16);
+
+    // aplikovat explicitní pixely (tím zajistíme přesné 16:9 i ve fullscreenu)
+    player.style.width = chosenWidth + 'px';
+    player.style.height = chosenHeight + 'px';
+
+    // zajistit, aby wrapper zůstal centrovaný (wrapper je flex container, takže stačí)
+    // přepočítat měřítko tabulky po změně rozměrů
+    scaleTimeTable();
+  } else {
+    // opustili jsme fullscreen — vrátit se k původnímu CSS (remove inline style)
+    player.style.width = '';
+    player.style.height = '';
+    scaleTimeTable();
+  }
+}
+
 // Přepočítat při načtení a při resize
 window.addEventListener('load', scaleTimeTable);
-window.addEventListener('resize', scaleTimeTable);
+window.addEventListener('resize', () => {
+  scaleTimeTable();
+  adjustVideoPlaySizeForFullscreen(); // pokud jsme ve fullscreenu, přepočítej
+});
+
+// (poznámka: voláme adjust také při změně fullscreen stavu níže)
+
 </script>
 </head>
 
@@ -216,7 +256,7 @@ const exitBtn = document.getElementById('exitFullscreenBtn');
 const overlay = document.querySelector('.mouse-overlay');
 
 function showBtn() {
-  const activeBtn = document.fullscreenElement ? exitBtn : enterBtn;
+  const activeBtn = (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) ? exitBtn : enterBtn;
   activeBtn.style.display = 'block';
   clearTimeout(hideTimeout);
   hideTimeout = setTimeout(() => {
@@ -230,15 +270,29 @@ overlay.addEventListener('mousemove', () => {
   overlay.style.pointerEvents = 'none';
 });
 
-document.addEventListener('fullscreenchange', () => {
-  if (document.fullscreenElement) {
+// --- upravený fullscreenchange handler: přepíná tlačítka a volá adjustVideoPlaySizeForFullscreen ---
+function onFullscreenChange() {
+  const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+  const wrapper = document.querySelector('.video-wrapper');
+  if (fsElem) {
+    // pokud fullscreen aktivní, zobrazíme exit tlačítko
     enterBtn.style.display = 'none';
-    showBtn(); // ukáže exit
+    exitBtn.style.display = 'block';
+    showBtn(); // aby se tlačítko schovalo po x sekundách stejně jako dříve
   } else {
+    // když není fullscreen, zobrazíme enter tlačítko
     exitBtn.style.display = 'none';
-    showBtn(); // ukáže enter
+    enterBtn.style.display = 'block';
+    showBtn();
   }
-});
+  // přepočítej velikost hráče pokud je potřeba
+  adjustVideoPlaySizeForFullscreen();
+}
+
+// cross-browser event hooks
+document.addEventListener('fullscreenchange', onFullscreenChange);
+document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+document.addEventListener('msfullscreenchange', onFullscreenChange);
 </script>
 
 </body>
