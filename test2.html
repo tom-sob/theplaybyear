@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>TV by THE PLAY BY EAR</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  font-family: Palatino;
+}
+
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.video-play {
+  position: relative;
+  width: min(100vw, 100vh * 16 / 9);
+  height: min(100vh, 100vw * 9 / 16);
+  background: #000;
+}
+
+/* YouTube iframe bez ovládacích prvků */
+.video-play iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Overlay pro vlastní play/pause */
+.overlay-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.overlay-play:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+.overlay-play:after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 25px solid white;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
+/* Tabulka s logem a hodinami */
+.time {
+  position: absolute;
+  bottom: 4%;
+  right: 10%;
+  font-size: 1.3em;
+  color: rgba(159, 151, 175, 0.4);
+  font-weight: bold;
+  text-align: center;
+  z-index: 999;
+  max-width: 90%;
+  max-height: 90%;
+  transform-origin: bottom right;
+  opacity: 0;
+  animation: show 1s ease forwards;
+  animation-delay: 0.75s;
+}
+
+.slider {
+  height: auto;
+  width: 3.6em;
+  margin-bottom: 2%;
+  margin-left: 1%;
+}
+
+@keyframes show {
+  to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="video-wrapper">
+  <div class="video-play">
+    <iframe id="ytplayer"
+      src="https://www.youtube-nocookie.com/embed/VIDEO_ID?controls=0&modestbranding=1&rel=0&loop=1&playlist=VIDEO_ID&autoplay=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+
+    <!-- Overlay play/pause -->
+    <div class="overlay-play" id="playBtn"></div>
+
+    <!-- Tabulka s logem a hodinami -->
+    <table border="0" cellpadding="0" cellspacing="20" class="time">
+      <tr>
+        <td>
+          <img src="images/tpbetv-logo.png" alt="" class="slider" />
+          <div id="txt"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+// Hodiny
+function startTime() {
+  var today=new Date();
+  var h=today.getHours();
+  var m=today.getMinutes();
+  m=checkTime(m);
+  document.getElementById('txt').innerHTML=h+":"+m;
+  setTimeout(startTime,500);
+}
+function checkTime(i) {
+  if (i<10) { i="0"+i; }
+  return i;
+}
+startTime();
+
+// Proporční škálování tabulky
+function scaleTimeTable() {
+  const wrapper = document.querySelector('.video-wrapper');
+  const table = document.querySelector('.time');
+  if (!wrapper || !table) return;
+  
+  const scaleX = wrapper.clientWidth / 800;
+  const scaleY = wrapper.clientHeight / 450;
+  const scale = Math.min(scaleX, scaleY);
+  table.style.transform = 'scale(' + scale + ')';
+}
+window.addEventListener('load', scaleTimeTable);
+window.addEventListener('resize', scaleTimeTable);
+
+// Play/pause overlay
+const playBtn = document.getElementById('playBtn');
+const player = document.getElementById('ytplayer');
+
+let playing = false;
+
+playBtn.addEventListener('click', () => {
+  if (!playing) {
+    player.src += "&autoplay=1";
+    playBtn.style.display = 'none';
+    playing = true;
+  } else {
+    player.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    playing = false;
+    playBtn.style.display = 'flex';
+  }
+});
+</script>
+
+</body>
+</html>
