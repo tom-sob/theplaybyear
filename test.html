@@ -49,18 +49,6 @@ body {
   position: relative;
 }
 
-/* Overlay pro zachytávání pohybu myši nad iframe */
-.mouse-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 500;
-  background: transparent;
-  pointer-events: auto;
-}
-
 /* Tabulka s časem */
 .time {
 	position: absolute;
@@ -89,34 +77,11 @@ body {
   margin-left: 1%;
 }
 
-/* Tlačítka fullscreen */
-.fullscreen-btn {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	padding: 0.3em;
-	background-color: rgba(0,0,0,0);
-	border: none;
-	cursor: pointer;
-	display: none;
-	z-index: 1000;
-}
-.fullscreen-btn svg {
-  width: 24px;
-  height: 24px;
-  stroke: white;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 @keyframes show {
   to {
     opacity: 1;
   }
 }
-
 </style>
 
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
@@ -134,28 +99,6 @@ function checkTime(i) {
   return i;
 }
 
-// --- Fullscreen nad wrapper ---
-function goFullscreen() {
-  const elem = document.querySelector('.video-wrapper');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
-}
-
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-}
-
 // --- Proporční škálování tabulky ---
 function scaleTimeTable() {
   const wrapper = document.querySelector('.video-wrapper');
@@ -168,36 +111,8 @@ function scaleTimeTable() {
   table.style.transform = 'scale(' + scale + ')';
 }
 
-// --- Přizpůsobení .video-play ve fullscreen ---
-function adjustVideoPlaySizeForFullscreen() {
-  const wrapper = document.querySelector('.video-wrapper');
-  const player = document.querySelector('.video-play');
-  if (!wrapper || !player) return;
-
-  const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-  if (fsElem === wrapper) {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const widthFromVH = Math.round(vh * 16 / 9);
-    const chosenWidth = Math.min(vw, widthFromVH);
-    const chosenHeight = Math.round(chosenWidth * 9 / 16);
-
-    player.style.width = chosenWidth + 'px';
-    player.style.height = chosenHeight + 'px';
-
-    scaleTimeTable();
-  } else {
-    player.style.width = '';
-    player.style.height = '';
-    scaleTimeTable();
-  }
-}
-
 window.addEventListener('load', scaleTimeTable);
-window.addEventListener('resize', () => {
-  scaleTimeTable();
-  adjustVideoPlaySizeForFullscreen();
-});
+window.addEventListener('resize', scaleTimeTable);
 </script>
 </head>
 
@@ -213,22 +128,6 @@ window.addEventListener('resize', () => {
               allowfullscreen>
       </iframe>
     </div>
-
-    <!-- Overlay nad iframe -->
-    <div class="mouse-overlay"></div>
-
-    <!-- Tlačítka fullscreen -->
-    <button class="fullscreen-btn" id="enterFullscreenBtn" onclick="goFullscreen()">
-      <svg viewBox="0 0 24 24">
-        <path d="M3 3h6v6H3V3zM15 3h6v6h-6V3zM3 15h6v6H3v-6zM15 15h6v6h-6v-6z"></path>
-      </svg>
-    </button>
-
-    <button class="fullscreen-btn" id="exitFullscreenBtn" onclick="exitFullscreen()" style="display:none;">
-      <svg viewBox="0 0 24 24">
-        <path d="M9 9H3V3h6v6zm12 0h-6V3h6v6zM9 21H3v-6h6v6zm12 0h-6v-6h6v6z"></path>
-      </svg>
-    </button>
 
     <!-- Tabulka s logem a hodinami -->
     <table border="0" cellpadding="0" cellspacing="20" class="time" oncontextmenu="return false;" draggable="false">
@@ -252,45 +151,6 @@ window.addEventListener('resize', () => {
     setTimeout(function() { location.reload(); }, diff);
   }
 })();
-
-let hideTimeout;
-const enterBtn = document.getElementById('enterFullscreenBtn');
-const exitBtn = document.getElementById('exitFullscreenBtn');
-const overlay = document.querySelector('.mouse-overlay');
-
-function showBtn() {
-  const activeBtn = (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) ? exitBtn : enterBtn;
-  activeBtn.style.display = 'block';
-  clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(() => {
-    activeBtn.style.display = 'none';
-    overlay.style.pointerEvents = 'auto';
-  }, 3000);
-}
-
-overlay.addEventListener('mousemove', () => {
-  showBtn();
-  overlay.style.pointerEvents = 'none';
-});
-
-function onFullscreenChange() {
-  const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-  const wrapper = document.querySelector('.video-wrapper');
-  if (fsElem) {
-    enterBtn.style.display = 'none';
-    exitBtn.style.display = 'block';
-    showBtn();
-  } else {
-    exitBtn.style.display = 'none';
-    enterBtn.style.display = 'block';
-    showBtn();
-  }
-  adjustVideoPlaySizeForFullscreen();
-}
-
-document.addEventListener('fullscreenchange', onFullscreenChange);
-document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-document.addEventListener('msfullscreenchange', onFullscreenChange);
 </script>
 
 </body>
