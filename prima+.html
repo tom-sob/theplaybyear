@@ -56,13 +56,15 @@ html, body {
 	transition: opacity 0.3s ease;
 }
 .fullscreen-btn svg {
-  width: 24px;
-  height: 24px;
-  stroke: white;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+	width: 24px;
+	height: 24px;
+	stroke: white;
+	fill: none;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	background-image: url(images/full-bnt.png);
+	background-repeat: no-repeat;
 }
 .fullscreen-btn.hidden {
   opacity: 0;
@@ -112,13 +114,11 @@ html, body {
   <!-- Tlačítka fullscreen -->
   <button class="fullscreen-btn control" id="enterFullscreenBtn" onclick="goFullscreen()">
     <svg viewBox="0 0 24 24">
-      <path d="M3 3h6v6H3V3zM15 3h6v6h-6V3zM3 15h6v6H3v-6zM15 15h6v6h-6v-6z"></path>
     </svg>
   </button>
 
   <button class="fullscreen-btn control" id="exitFullscreenBtn" onclick="exitFullscreen()" style="display:none;">
     <svg viewBox="0 0 24 24">
-      <path d="M9 9H3V3h6v6zm12 0h-6V3h6v6zM9 21H3v-6h6v6zm12 0h-6v-6h6v6z"></path>
     </svg>
   </button>
 </div>
