@@ -25,12 +25,16 @@ html, body {
   height: min(100vh, 100vw * 9 / 16);
   transform: translate(-50%, -50%);
   background: #000;
+  overflow: hidden; /* schová přebytek */
+  position: relative;
 }
 
-.video-wrapper video {
+.video-wrapper iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* video se roztáhne a ořízne tak, aby zaplnilo box */
+  border: 0;
+  display: block;
+  object-fit: cover;   /* funguje i na iframe ve většině moderních prohlížečů */
 }
 
 .video-wrapper .logo {
@@ -181,5 +185,3 @@ showControls();
 
 </body>
 </html>
-
-
