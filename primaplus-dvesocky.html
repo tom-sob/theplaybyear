@@ -28,17 +28,12 @@ html, body {
   overflow: hidden;
 }
 
-.video-wrapper video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* video se roztáhne a ořízne tak, aby zaplnilo box */
-}
-
 .video-wrapper iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
+  object-fit: cover; /* video se roztáhne a ořízne tak, aby zaplnilo box */
   transform: scale(1.0);
 }
 
@@ -108,8 +103,7 @@ html, body {
 <body>
 
 <div class="video-wrapper">
-  <iframe src="https://prehraj.to/embed/5adf032cdc0bb" 
-          title="YouTube video player" 
+  <iframe src="https://prehraj.to/embed/5adf032cdc0bb"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
   </iframe>
 
@@ -190,6 +184,7 @@ showControls();
 
 </body>
 </html>
+
 
 
 
