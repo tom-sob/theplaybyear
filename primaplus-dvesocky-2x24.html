@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="cs">
+<head>
+<link rel="shortcut icon" href="prima_fav.ico" type="image/ico">
+<meta charset="UTF-8">
+<title>prima+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+<style>
+html, body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	font-family: Palatino;
+	overflow: hidden;
+}
+
+.video-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, 100vh * 16 / 9);
+  height: min(100vh, 100vw * 9 / 16);
+  transform: translate(-50%, -50%);
+  background: #000;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover; /* video se roztáhne a ořízne tak, aby zaplnilo box */
+  transform: scale(1.0);
+}
+
+.video-wrapper .logo {
+  position: absolute;
+  top: 4.1%;
+  left: 3.9%;
+  width: 6.3%;
+  height: auto;
+  z-index: 20;
+}
+
+.fullscreen-btn {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	padding: 0.3em;
+	background-color: rgba(0,0,0,0);
+	border: none;
+	cursor: pointer;
+	z-index: 25;
+	border-radius: 6px;
+	transition: opacity 0.3s ease;
+}
+.fullscreen-btn svg {
+	width: 24px;
+	height: 24px;
+	stroke: white;
+	fill: none;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	background-image: url(images/full-bnt.png);
+	background-repeat: no-repeat;
+}
+.fullscreen-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Overlay pro zachycení pohybu myši */
+.mouse-overlay {
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  background: transparent;
+  pointer-events: auto;
+}
+</style>
+
+<script>
+// Auto-refresh na konkrétní čas
+(function() {
+  var target = new Date("2025-09-13T11:05:00");
+  var now = new Date();
+  var diff = target - now;
+  if (diff > 0) {
+    setTimeout(function() { location.reload(); }, diff);
+  }
+})();
+</script>
+
+</head>
+<body>
+
+<div class="video-wrapper">
+  <iframe src="https://prehraj.to/embed/68c91f423d4fd"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+  </iframe>
+
+  <!-- Overlay -->
+  <div class="mouse-overlay"></div>
+
+  <!-- Logo -->
+  <img src="images/prima+.png" alt="Logo" class="logo" />
+
+  <!-- Tlačítka fullscreen -->
+  <button class="fullscreen-btn control" id="enterFullscreenBtn" onclick="goFullscreen()">
+    <svg viewBox="0 0 24 24">
+    </svg>
+  </button>
+
+  <button class="fullscreen-btn control" id="exitFullscreenBtn" onclick="exitFullscreen()" style="display:none;">
+    <svg viewBox="0 0 24 24">
+    </svg>
+  </button>
+</div>
+
+<script>
+const enterBtn = document.getElementById('enterFullscreenBtn');
+const exitBtn = document.getElementById('exitFullscreenBtn');
+const controls = document.querySelectorAll('.control');
+const overlay = document.querySelector('.mouse-overlay');
+let hideTimeout;
+
+// Fullscreen funkce
+function goFullscreen() {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) elem.requestFullscreen();
+  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+  else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+}
+function exitFullscreen() {
+  if (document.exitFullscreen) document.exitFullscreen();
+  else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  else if (document.msExitFullscreen) document.msExitFullscreen();
+}
+
+// Fullscreen change
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) {
+    enterBtn.style.display = 'none';
+    exitBtn.style.display = 'block';
+  } else {
+    enterBtn.style.display = 'block';
+    exitBtn.style.display = 'none';
+  }
+  showControls();
+});
+
+// Funkce pro skrývání/zobrazování tlačítek
+function hideControls() {
+  controls.forEach(c => c.classList.add('hidden'));
+  overlay.style.pointerEvents = 'auto'; // overlay znovu zachytí myš
+}
+
+function showControls() {
+  controls.forEach(c => c.classList.remove('hidden'));
+  overlay.style.pointerEvents = 'none'; // umožní kliknutí na iframe
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(hideControls, 3000);
+}
+
+// Overlay zachytí pohyb myši
+overlay.addEventListener('mousemove', showControls);
+
+// Zachycení pohybu myši/kliků/kláves pro zobrazení tlačítek
+window.addEventListener('mousemove', showControls);
+window.addEventListener('keydown', showControls);
+window.addEventListener('click', showControls);
+
+// Po načtení stránky zobraz tlačítka
+showControls();
+</script>
+
+</body>
+</html>
